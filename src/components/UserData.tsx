@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { ChevronDown, ChevronsUpDown, ChevronUp } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useUser } from "../context/userContext";
-import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 interface GradeData {
   total: number;
@@ -39,7 +41,7 @@ const UserData = () => {
 
       try {
         const res = await fetch(
-          "https://dev.yama.maizelab-cloud.com/api/v1/admin/usersReport",
+          `${BASE_URL}/api/v1/admin/usersReport`,
           {
             method: "GET",
             headers: {
@@ -58,7 +60,7 @@ const UserData = () => {
         const json: ApiResponse = await res.json();
         setData(json);
         setSortedData(Object.entries(json.report));
-      } catch (err: any) {
+      } catch (err: any) {  // eslint-disable-line @typescript-eslint/no-explicit-any
         setError(err.message || "Something went wrong");
       } finally {
         setLoading(false);

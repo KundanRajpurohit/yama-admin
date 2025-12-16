@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "../context/userContext";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 interface Sport {
   sportId: number;
@@ -29,7 +31,7 @@ const SportManager: React.FC<SportManagerProps> = ({ onSelectSport }) => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/sports",
+        `${BASE_URL}/api/v1/sports`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -55,7 +57,7 @@ const SportManager: React.FC<SportManagerProps> = ({ onSelectSport }) => {
   const handleAddSport = async () => {
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/sports",
+        `${BASE_URL}/api/v1/sports`,
         {
           method: "POST",
           headers: {
@@ -84,7 +86,7 @@ const SportManager: React.FC<SportManagerProps> = ({ onSelectSport }) => {
     if (!selectedSport) return;
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/sports",
+        `${BASE_URL}/api/v1/sports`,
         {
           method: "PUT",
           headers: {
@@ -117,7 +119,7 @@ const SportManager: React.FC<SportManagerProps> = ({ onSelectSport }) => {
     if (!selectedSport) return;
     try {
       const response = await fetch(
-        `https://dev.yama.maizelab-cloud.com/api/v1/sports/${selectedSport.sportId}`,
+        `${BASE_URL}/api/v1/sports/${selectedSport.sportId}`,
         {
           method: "DELETE",
           headers: {

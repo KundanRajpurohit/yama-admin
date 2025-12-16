@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { useUser } from "../context/userContext";
-import RawVideoGrid from "../components/rawVideoGrid";
 import {
-  VideoIcon,
   AlertCircle,
-  RefreshCw,
-  FileVideo,
   ChevronLeft,
   ChevronRight,
+  FileVideo,
+  RefreshCw,
+  VideoIcon,
 } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import RawVideoGrid from "../components/rawVideoGrid";
+import { useUser } from "../context/userContext";
 
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 interface RawVideo {
   id: number;
   contactNumber: string;
@@ -61,7 +63,7 @@ const RawVideos: React.FC = () => {
 
     try {
       const response = await fetch(
-        `https://dev.yama.maizelab-cloud.com/api/v1/admin/rawVideos?page=${page}&limit=${limit}`,
+        `${BASE_URL}/api/v1/admin/rawVideos?page=${page}&limit=${limit}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -85,7 +87,8 @@ const RawVideos: React.FC = () => {
       } else {
         throw new Error(data.message || "Unknown error occurred");
       }
-    } catch (err: any) {
+    } 
+    catch (err: any) {  // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error("Error fetching raw videos:", err);
       setError(err.message || "Failed to load raw videos");
       setVideos([]);
@@ -97,20 +100,6 @@ const RawVideos: React.FC = () => {
   useEffect(() => {
     fetchVideos(currentPage);
   }, [token, userId, currentPage]);
-
-  const handleVideoDeleted = (deletedId: number) => {
-    setVideos((prevVideos) =>
-      prevVideos.filter((video) => video.id !== deletedId)
-    );
-
-    // If this was the last video on the current page and we're not on page 1
-    if (videos.length === 1 && currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    } else if (videos.length === 1) {
-      // If it was the only video, refetch to update pagination
-      fetchVideos(currentPage);
-    }
-  };
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {

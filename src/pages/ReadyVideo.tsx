@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useUser } from "../context/userContext";
+import React, { useEffect, useState } from "react";
 import VideoGrid from "../components/VideoGrid";
+import { useUser } from "../context/userContext";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 interface Video {
   id: number;
   contactNumber?: string;
@@ -69,7 +70,7 @@ const ReadyVideos: React.FC = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://dev.yama.maizelab-cloud.com/api/v1/admin/videos?page=${currentPage}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}`,
+          `${BASE_URL}/api/v1/admin/videos?page=${currentPage}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}`,
           {
             method: "POST",
             headers: {
@@ -112,7 +113,6 @@ const ReadyVideos: React.FC = () => {
             url: video.url,
             title: video.title,
             searchable: video.searchable,
-           
             summary: video.videoSummary,
             thumbnail: video.thumbNailUrl,
           }));
@@ -122,7 +122,7 @@ const ReadyVideos: React.FC = () => {
         if (mappedVideos.length < data.details.videos.length) {
           setError("Some videos were skipped due to invalid data");
         }
-      } catch (error: any) {
+      } catch (error: any) { // eslint-disable-line
         console.error("Error fetching videos:", error);
         setError("Failed to load videos. Please try again.");
       } finally {

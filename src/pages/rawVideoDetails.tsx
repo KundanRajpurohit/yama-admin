@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
-  PlayCircle,
-  Download,
   Calendar,
+  Download,
   Eye,
-  Phone,
   Mail,
-  VideoIcon,
+  Phone,
+  PlayCircle,
   Trash2,
+  VideoIcon,
 } from "lucide-react";
+import React, { useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 interface RawVideo {
   id: number;
@@ -82,8 +84,10 @@ const RawVideoDetails: React.FC = () => {
   const handleDelete = async () => {
     setDeleting(true);
     try {
+      console.log(id);
+      
       const response = await fetch(
-        `https://dev.yama.maizelab-cloud.com/api/v1/admin/rawVideo/${video.id}`,
+        `${BASE_URL}/api/v1/admin/rawVideo/${video.id}`,
         {
           method: "DELETE",
           headers: {

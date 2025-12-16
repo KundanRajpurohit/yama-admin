@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "../context/userContext";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 interface Sport {
   sportId: number;
@@ -44,7 +46,7 @@ const AthleteManager: React.FC<AthleteManagerProps> = ({ onSelectAthlete }) => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/athlete/",
+        `${BASE_URL}/api/v1/athlete/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -67,7 +69,7 @@ const AthleteManager: React.FC<AthleteManagerProps> = ({ onSelectAthlete }) => {
     const fetchSports = async () => {
       try {
         const response = await fetch(
-          "https://dev.yama.maizelab-cloud.com/api/v1/sports"
+          `${BASE_URL}/api/v1/sports`
         );
         const data = await response.json();
         setSports(data.sports || []);
@@ -83,7 +85,7 @@ const AthleteManager: React.FC<AthleteManagerProps> = ({ onSelectAthlete }) => {
   const handleAddAthlete = async () => {
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/athlete/",
+        `${BASE_URL}/api/v1/athlete/`,
         {
           method: "POST",
           headers: {
@@ -118,7 +120,7 @@ const AthleteManager: React.FC<AthleteManagerProps> = ({ onSelectAthlete }) => {
     if (!selectedAthlete) return;
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/athlete/",
+        `${BASE_URL}/api/v1/athlete/`,
         {
           method: "PUT",
           headers: {
@@ -164,7 +166,7 @@ const AthleteManager: React.FC<AthleteManagerProps> = ({ onSelectAthlete }) => {
     if (!selectedAthlete) return;
     try {
       const response = await fetch(
-        `https://dev.yama.maizelab-cloud.com/api/v1/athlete/${selectedAthlete.athleteId}`,
+        `${BASE_URL}/api/v1/athlete/${selectedAthlete.athleteId}`,
         {
           method: "DELETE",
           headers: {

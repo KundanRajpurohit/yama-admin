@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "../context/userContext";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 interface VideoCategory {
   categoryId: number;
@@ -53,7 +55,7 @@ const VideoCategorySubCategoryManager: React.FC<
     setError(null);
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/videoCategory/",
+        `${BASE_URL}/api/v1/videoCategory/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -82,7 +84,7 @@ const VideoCategorySubCategoryManager: React.FC<
     setError(null);
     try {
       const response = await fetch(
-        `https://dev.yama.maizelab-cloud.com/api/v1/videoSubCategory/${selectedCategoryId}`,
+        `${BASE_URL}/api/v1/videoSubCategory/${selectedCategoryId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -113,7 +115,7 @@ const VideoCategorySubCategoryManager: React.FC<
   const handleAddVideoCategory = async () => {
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/videoCategory/",
+        `${BASE_URL}/api/v1/videoCategory/`,
         {
           method: "POST",
           headers: {
@@ -143,7 +145,7 @@ const VideoCategorySubCategoryManager: React.FC<
     if (!selectedVideoCategory) return;
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/videoCategory/",
+        `${BASE_URL}/api/v1/videoCategory/`,
         {
           method: "PUT",
           headers: {
@@ -177,7 +179,7 @@ const VideoCategorySubCategoryManager: React.FC<
     if (!selectedVideoCategory) return;
     try {
       const response = await fetch(
-        `https://dev.yama.maizelab-cloud.com/api/v1/videoCategory/${selectedVideoCategory.categoryId}`,
+        `${BASE_URL}/api/v1/videoCategory/${selectedVideoCategory.categoryId}`,
         {
           method: "DELETE",
           headers: {
@@ -211,7 +213,7 @@ const VideoCategorySubCategoryManager: React.FC<
     }
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/videoSubCategory/",
+        `${BASE_URL}/api/v1/videoSubCategory/`,
         {
           method: "POST",
           headers: {
@@ -244,7 +246,7 @@ const VideoCategorySubCategoryManager: React.FC<
     if (!selectedVideoSubCategory || !selectedCategoryId) return;
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/videoSubCategory/",
+        `${BASE_URL}/api/v1/videoSubCategory/`,
         {
           method: "PUT",
           headers: {
@@ -279,7 +281,7 @@ const VideoCategorySubCategoryManager: React.FC<
     if (!selectedVideoSubCategory) return;
     try {
       const response = await fetch(
-        `https://dev.yama.maizelab-cloud.com/api/v1/videoSubCategory/${selectedVideoSubCategory.subCategoryId}`,
+        `${BASE_URL}/api/v1/videoSubCategory/${selectedVideoSubCategory.subCategoryId}`,
         {
           method: "DELETE",
           headers: {

@@ -1,7 +1,10 @@
 
-import React, { useState, useEffect, useCallback } from "react";
+import { ChevronDown, ChevronsUpDown, ChevronUp } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "../context/userContext";
-import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 interface Video {
   videoId: string;
@@ -110,13 +113,13 @@ const ReadyVideoTable: React.FC = () => {
       setFilterLoading(true);
       try {
         const [athleteRes, categoryRes] = await Promise.all([
-          fetch("https://dev.yama.maizelab-cloud.com/api/v1/athlete/", {
+          fetch(`${BASE_URL}/api/v1/athlete/`, {
             headers: {
               Authorization: `Bearer ${token}`,
               "x-userId": userId,
             },
           }),
-          fetch("https://dev.yama.maizelab-cloud.com/api/v1/videoCategory/", {
+          fetch(`${BASE_URL}/api/v1/videoCategory/`, {
             headers: {
               Authorization: `Bearer ${token}`,
               "x-userId": userId,
@@ -159,7 +162,7 @@ const ReadyVideoTable: React.FC = () => {
       setFilterLoading(true);
       try {
         const response = await fetch(
-          `https://dev.yama.maizelab-cloud.com/api/v1/videoSubCategory/${filters.categoryId}`,
+          `${BASE_URL}/api/v1/videoSubCategory/${filters.categoryId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -197,7 +200,7 @@ const ReadyVideoTable: React.FC = () => {
     const fetchVideos = async () => {
       setLoading(true);
       try {
-        const body: any = {
+        const body: any = { // eslint-disable-line
           page: currentPage,
           limit: pageSize,
           sortBy: sortField || "createdAt",
@@ -210,7 +213,7 @@ const ReadyVideoTable: React.FC = () => {
         if (filters.subCategoryId) body.subCategoryId = filters.subCategoryId;
 
         const response = await fetch(
-          "https://dev.yama.maizelab-cloud.com/api/v1/admin/videos",
+          `${BASE_URL}/api/v1/admin/videos`,
           {
             method: "POST",
             headers: {
@@ -233,7 +236,7 @@ const ReadyVideoTable: React.FC = () => {
 
         setVideos(validVideos);
         setTotalPages(data.details.pagination.totalPages);
-      } catch (error: any) {
+      } catch (error: any) { // eslint-disable-line
         console.error("Fetch Error:", error);
         setError("Failed to load videos.");
       } finally {

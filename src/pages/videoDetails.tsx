@@ -1,23 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useUser } from "../context/userContext";
 import {
-  PlayCircle,
-  Download,
-  VideoIcon,
-  BadgeInfo,
-  Save,
   ArrowLeft,
+  BadgeInfo,
+  Download,
+  Edit3,
+  Eye,
+  Mail,
+  Phone,
+  PlayCircle,
+  Save,
   Trash2,
   Upload,
-  Image as ImageIcon,
-  Calendar,
-  Eye,
-  Phone,
-  Mail,
-  Edit3,
+  VideoIcon
 } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useUser } from "../context/userContext";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 interface Video {
   id: number;
   contactNumber?: string;
@@ -143,7 +142,7 @@ const VideoDetails: React.FC = () => {
       setFilterLoading(true);
       try {
         const categoryRes = await fetch(
-          "https://dev.yama.maizelab-cloud.com/api/v1/videoCategory/",
+          `${BASE_URL}/api/v1/videoCategory/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -185,7 +184,7 @@ const VideoDetails: React.FC = () => {
       setFilterLoading(true);
       try {
         const subCategoryRes = await fetch(
-          `https://dev.yama.maizelab-cloud.com/api/v1/videoSubCategory/${formData.categoryId}`,
+          `${BASE_URL}/api/v1/videoSubCategory/${formData.categoryId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -360,7 +359,7 @@ const VideoDetails: React.FC = () => {
     try {
       // Get signed URL
       const signedUrlRes = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/uploads/videoSignedUrls",
+        `${BASE_URL}/api/v1/uploads/videoSignedUrls`,
         {
           method: "POST",
           headers: {
@@ -466,7 +465,7 @@ const VideoDetails: React.FC = () => {
       console.log("Update payload:", updatePayload);
 
       const response = await fetch(
-        `https://dev.yama.maizelab-cloud.com/api/v1/admin/updateVideo`,
+        `${BASE_URL}/api/v1/admin/updateVideo`,
         {
           method: "PUT",
           headers: {
@@ -491,7 +490,7 @@ const VideoDetails: React.FC = () => {
       setThumbnailFile(null);
       setThumbnailPreview(null);
       navigate(-1);
-    } catch (error: any) {
+    } catch (error: any) { // eslint-disable-line
       console.error("Error updating video:", error);
       setError(`Failed to save changes: ${error.message}`);
     } finally {
@@ -509,7 +508,7 @@ const VideoDetails: React.FC = () => {
     setIsDeleting(true);
     try {
       const response = await fetch(
-        `https://dev.yama.maizelab-cloud.com/api/v1/admin/video/${video.id}`,
+        `${BASE_URL}/api/v1/admin/video/${video.id}`,
         {
           method: "DELETE",
           headers: {
@@ -525,35 +524,13 @@ const VideoDetails: React.FC = () => {
 
       // Successfully deleted, navigate back
       navigate(-1);
-    } catch (error: any) {
+    } catch (error: any) { // eslint-disable-line
       console.error("Error deleting video:", error);
       setError("Failed to delete video. Please try again.");
     } finally {
       setIsDeleting(false);
       setShowDeleteConfirm(false);
     }
-  };
-
-  const resetForm = () => {
-    setFormData({
-      title: video?.title || "",
-      videoSummary: video?.summary || "",
-      searchable: video?.searchable || false,
-      categoryId:
-        video?.categoryId ??
-        categories.find((c) => c.name === video?.category)?.categoryId ??
-        0,
-      subCategoryId:
-        video?.subCategoryId ??
-        subCategories.find((s) => s.name === video?.subcategory)
-          ?.subCategoryId ??
-        0,
-      targetGradeCategory: video?.grade || "",
-      targetGender: video?.gender || "",
-    });
-    setThumbnailFile(null);
-    setThumbnailPreview(null);
-    setFormErrors({});
   };
 
   return (

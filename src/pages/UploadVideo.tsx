@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import axios from "axios";
 import confetti from "canvas-confetti";
+import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
 import AthleteManager from "../components/AthleteManager";
 import SportManager from "../components/SportManager";
-import { useUser } from "../context/userContext";
 import VideoCategorySubCategoryManager from "../components/VideoCategoryManager";
+import { useUser } from "../context/userContext";
 
 interface Athlete {
   athleteId: number;
@@ -37,7 +37,6 @@ const UploadVideo: React.FC = () => {
   const userId = userDetails?.user.userId || "";
   const [formData, setFormData] = useState({
     athleteId: "",
-    // sportId: "",
     videoCategory: "",
     subCategory: "",
     summary: "",
@@ -63,7 +62,8 @@ const UploadVideo: React.FC = () => {
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const API_BASE_URL = "https://dev.yama.maizelab-cloud.com";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  
   const PART_SIZE = 80 * 1024 * 1024; // 80MB per part
 
   // Fetch athletes, sports, and video categories
@@ -71,6 +71,7 @@ const UploadVideo: React.FC = () => {
     const fetchAthletes = async () => {
       setIsLoading(true);
       try {
+        console.log(sports);
         const response = await fetch(`${API_BASE_URL}/api/v1/athlete/`, {
           headers: {
             "x-userid": userId,
@@ -293,7 +294,7 @@ const UploadVideo: React.FC = () => {
         }
       );
       return response.data;
-    } catch (error: any) {
+    } catch (error: any) { // eslint-disable-line
       const message = error.response?.data
 
 ?.message || error.message;
@@ -351,7 +352,7 @@ const UploadVideo: React.FC = () => {
           PartNumber: partNumber,
           ETag: response.headers.etag || "",
         });
-      } catch (error: any) {
+      } catch (error: any) { // eslint-disable-line
         const message = error.response?.data?.message || error.message;
         throw new Error(`Failed to upload part ${partNumber}: ${message}`);
       }
@@ -368,6 +369,8 @@ const UploadVideo: React.FC = () => {
     totalProgressWeight: number
   ) => {
     try {
+      console.log(totalSize);
+
       await axios.put(signedUrl, thumbnail, {
         headers: {
           "Content-Type": "image/png",
@@ -387,7 +390,7 @@ const UploadVideo: React.FC = () => {
           }
         },
       });
-    } catch (error: any) {
+    } catch (error: any) { // eslint-disable-line
       const message = error.response?.data?.message || error.message;
       throw new Error(`Failed to upload thumbnail: ${message}`);
     }
@@ -422,7 +425,7 @@ const UploadVideo: React.FC = () => {
         }
       );
       return response.data;
-    } catch (error: any) {
+    } catch (error: any) { // eslint-disable-line
       const message = error.response?.data?.message || error.message;
       throw new Error(`Failed to complete upload: ${message}`);
     }
@@ -545,7 +548,7 @@ const UploadVideo: React.FC = () => {
         if (videoInputRef.current) videoInputRef.current.value = "";
         if (thumbnailInputRef.current) thumbnailInputRef.current.value = "";
       }, 5000);
-    } catch (error: any) {
+    } catch (error: any) { // eslint-disable-line
       const errorMessage = error.message || "Unknown error";
       setError(`Failed to upload: ${errorMessage}. Please try again.`);
       console.error("Upload error:", error);

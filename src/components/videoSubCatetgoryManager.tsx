@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "../context/userContext";
 
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 interface VideoSubCategory {
   subCategoryId: number;
   name: string;
@@ -40,7 +42,7 @@ const VideoSubCategoryManager: React.FC<VideoSubCategoryManagerProps> = ({
       setIsLoading(true);
       try {
         const response = await fetch(
-          "https://dev.yama.maizelab-cloud.com/api/v1/videoSubCategory/"
+          `${BASE_URL}/api/v1/videoSubCategory/`
         );
         const data = await response.json();
         setLocalVideoSubCategories(data.videoSubCategories || []);
@@ -58,7 +60,7 @@ const VideoSubCategoryManager: React.FC<VideoSubCategoryManagerProps> = ({
   const handleAddVideoSubCategory = async () => {
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/videoSubCategory/",
+        `${BASE_URL}/api/v1/videoSubCategory/`,
         {
           method: "POST",
           headers: {
@@ -94,7 +96,7 @@ const VideoSubCategoryManager: React.FC<VideoSubCategoryManagerProps> = ({
     if (!selectedVideoSubCategory) return;
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/videoSubCategory/",
+        `${BASE_URL}/api/v1/videoSubCategory/`,
         {
           method: "PUT",
           headers: {
@@ -134,7 +136,7 @@ const VideoSubCategoryManager: React.FC<VideoSubCategoryManagerProps> = ({
     if (!selectedVideoSubCategory) return;
     try {
       const response = await fetch(
-        `https://dev.yama.maizelab-cloud.com/api/v1/videoSubCategory/${selectedVideoSubCategory.subCategoryId}`,
+        `${BASE_URL}/api/v1/videoSubCategory/${selectedVideoSubCategory.subCategoryId}`,
         {
           method: "DELETE",
           headers: {

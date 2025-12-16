@@ -1,6 +1,6 @@
+import { BadgeInfo, Download, PlayCircle, VideoIcon } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { PlayCircle, Download, VideoIcon, BadgeInfo } from "lucide-react";
 
 interface Video {
   id: number;

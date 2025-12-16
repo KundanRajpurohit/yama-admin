@@ -1,15 +1,14 @@
-// src/layouts/SidebarLayout.tsx
-import React, { useState } from "react";
-import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
-import { useUser } from "../context/userContext";
+import { useState } from "react";
 import {
+  FiFilm,
+  FiHome,
+  FiLogOut,
   FiMenu,
   FiUpload,
   FiVideo,
-  FiHome,
-  FiLogOut,
-  FiFilm,
 } from "react-icons/fi";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useUser } from "../context/userContext";
 
 const SidebarLayout = () => {
   const [collapsed, setCollapsed] = useState(false);

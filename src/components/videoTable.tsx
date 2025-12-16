@@ -1,7 +1,8 @@
-// src/components/VideoTable.tsx
 import React, { useEffect, useState } from "react";
 import { useUser } from "../context/userContext";
 
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 interface Video {
   id: number;
   contactNumber: string;
@@ -47,8 +48,8 @@ const VideoTable: React.FC<Props> = ({ title }) => {
       try {
         const endpoint =
           title === "Raw Videos"
-            ? `https://dev.yama.maizelab-cloud.com/api/v1/admin/rawVideos?page=${page}&limit=${limit}`
-            : `https://dev.yama.maizelab-cloud.com/api/v1/admin/rawVideos?page=${page}&limit=${limit}`;
+            ? `${BASE_URL}/api/v1/admin/rawVideos?page=${page}&limit=${limit}`
+            : `${BASE_URL}/api/v1/admin/videos?page=${page}&limit=${limit}`;
 
         const res = await fetch(endpoint, {
           headers: {
@@ -62,7 +63,8 @@ const VideoTable: React.FC<Props> = ({ title }) => {
         setVideos(data.details.videos);
         setTotal(data.details.pagination.totalRecords);
         setTotalPages(data.details.pagination.totalPages);
-      } catch (err: any) {
+      } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+        console.error(err);
         setError("Failed to fetch videos");
       } finally {
         setLoading(false);

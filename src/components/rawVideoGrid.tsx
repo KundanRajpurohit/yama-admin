@@ -1,6 +1,6 @@
+import { Calendar, Download, Eye, PlayCircle, VideoIcon } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { PlayCircle, Download, VideoIcon, Calendar, Eye } from "lucide-react";
 
 interface RawVideo {
   id: number;

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+
 const Login: React.FC = () => {
   const [emailId, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,10 +18,10 @@ const Login: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
-
+    
     try {
       const response = await fetch(
-        "https://dev.yama.maizelab-cloud.com/api/v1/users/login",
+        `${BASE_URL}/api/v1/users/login`,
         {
           method: "POST",
           headers: {
@@ -46,7 +49,7 @@ const Login: React.FC = () => {
 
       // Redirect to home
       navigate("/dashboard");
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line
       setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);

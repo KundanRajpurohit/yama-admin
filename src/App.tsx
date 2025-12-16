@@ -1,16 +1,14 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./components/Login";
-import Home from "./pages/home";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Login from "./components/login";
 import { UserProvider } from "./context/userContext";
 import SidebarLayout from "./layouts/sidebar";
 import Dashboard from "./pages/Dashboard";
 import RawVideos from "./pages/RawVideo";
+import RawVideoDetails from "./pages/rawVideoDetails";
 import ReadyVideos from "./pages/ReadyVideo";
 import UploadVideo from "./pages/UploadVideo";
-import VideoDetails from "./pages/VideoDetails";
+import VideoDetails from "./pages/videoDetails";
 import ProtectedRoute from "./routes/ProtectedRoutes";
-import RawVideoDetails from "./pages/RawVideoDetails";
 
 const App = () => {
   return (
