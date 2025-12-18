@@ -20,6 +20,8 @@ interface Video {
   athleteId?: number;
   categoryId?: number;
   subCategoryId?: number;
+  publicPreview?: boolean;
+  plateform?: "all" | "web" | "app";
 }
 
 interface ApiResponse {
@@ -37,6 +39,8 @@ interface ApiResponse {
       url: string;
       thumbNailUrl: string;
       title: string;
+      publicPreview?: boolean;
+      plateform?: "all" | "web" | "app";
     }[];
     pagination: {
       currentPage: number;
@@ -115,6 +119,8 @@ const ReadyVideos: React.FC = () => {
             searchable: video.searchable,
             summary: video.videoSummary,
             thumbnail: video.thumbNailUrl,
+            publicPreview: video.publicPreview,
+            plateform: video.plateform
           }));
 
         setVideos(mappedVideos);

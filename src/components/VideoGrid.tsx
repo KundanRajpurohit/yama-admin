@@ -16,6 +16,11 @@ interface Video {
   summary?: string;
   thumbnail?: string;
   searchable?: boolean;
+  athleteId?: number;
+  categoryId?: number;
+  subCategoryId?: number;
+  publicPreview?: boolean;
+  plateform?: "all" | "web" | "app";
 }
 
 interface Props {

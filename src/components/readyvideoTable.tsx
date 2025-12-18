@@ -19,6 +19,8 @@ interface Video {
   thumbNailUrl: string;
   title: string;
   createdAt: string;
+  publicPreview?: boolean;
+  plateform?: "all" | "web" | "app";
 }
 
 interface ApiResponse {
@@ -248,7 +250,7 @@ const ReadyVideoTable: React.FC = () => {
   }, [token, userId, currentPage, pageSize, sortField, sortOrder, debouncedTitle, filters.athleteId, filters.categoryId, filters.subCategoryId]);
 
   const handleSort = (field: keyof Video) => {
-    if (sortField === field ) {
+    if (sortField === field) {
       const next =
         sortOrder === "asc" ? "desc" : sortOrder === "desc" ? null : "asc";
       setSortOrder(next);

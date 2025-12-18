@@ -34,6 +34,8 @@ interface Video {
   athleteId?: number;
   categoryId?: number;
   subCategoryId?: number;
+  publicPreview?: boolean;
+  plateform?: "all" | "web" | "app";
 }
 
 interface Category {
@@ -126,6 +128,8 @@ const VideoDetails: React.FC = () => {
     searchable: video?.searchable || false,
     categoryId: 0,
     subCategoryId: 0,
+    publicPreview: video?.publicPreview || false,
+    plateform: video?.plateform || "All",
     targetGradeCategory: video?.grade || "",
     targetGender: video?.gender || "",
   });
@@ -278,6 +282,14 @@ const VideoDetails: React.FC = () => {
       </div>
     );
   }
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+  };
+
 
   const validateForm = () => {
     const errors: { [key: string]: string } = {};
@@ -453,7 +465,8 @@ const VideoDetails: React.FC = () => {
         targetGradeCategory: formData.targetGradeCategory,
         targetGender: formData.targetGender,
         searchable: formData.searchable,
-        // Only include thumbnail URLs if there's a change
+        publicPreview: formData.publicPreview,
+        plateform: formData.plateform,
         ...(thumbnailFile && {
           thumbNailUrl: {
             old: cleanOldThumbnailUrl,
@@ -461,6 +474,7 @@ const VideoDetails: React.FC = () => {
           },
         }),
       };
+
 
       console.log("Update payload:", updatePayload);
 
@@ -682,9 +696,8 @@ const VideoDetails: React.FC = () => {
                       name="title"
                       value={formData.title}
                       onChange={handleInputChange}
-                      className={`w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                        formErrors.title ? "border-red-500" : "border-gray-300"
-                      }`}
+                      className={`w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${formErrors.title ? "border-red-500" : "border-gray-300"
+                        }`}
                       placeholder="Enter video title"
                     />
                     {formErrors.title && (
@@ -738,6 +751,26 @@ const VideoDetails: React.FC = () => {
                     </p>
                   )}
                 </div>
+                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                  <Eye className="w-5 h-5 text-purple-600" />
+                  <div>
+                    <p className="text-sm text-gray-500">Public Preview</p>
+                    {isEditing ? (
+                      <input
+                        type="checkbox"
+                        name="publicPreview"
+                        checked={formData.publicPreview}
+                        onChange={handleCheckboxChange}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      />
+                    ) : (
+                      <p className="font-semibold">
+                        {video.publicPreview ? "Yes" : "No"}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -759,11 +792,10 @@ const VideoDetails: React.FC = () => {
                       name="categoryId"
                       value={formData.categoryId}
                       onChange={handleInputChange}
-                      className={`w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white ${
-                        formErrors.categoryId
-                          ? "border-red-500"
-                          : "border-gray-300"
-                      }`}
+                      className={`w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white ${formErrors.categoryId
+                        ? "border-red-500"
+                        : "border-gray-300"
+                        }`}
                       disabled={filterLoading}
                     >
                       <option value={0} disabled>
@@ -799,11 +831,10 @@ const VideoDetails: React.FC = () => {
                       name="subCategoryId"
                       value={formData.subCategoryId}
                       onChange={handleInputChange}
-                      className={`w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white ${
-                        formErrors.subCategoryId
-                          ? "border-red-500"
-                          : "border-gray-300"
-                      }`}
+                      className={`w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white ${formErrors.subCategoryId
+                        ? "border-red-500"
+                        : "border-gray-300"
+                        }`}
                       disabled={!formData.categoryId || filterLoading}
                     >
                       <option value={0} disabled>
@@ -840,11 +871,10 @@ const VideoDetails: React.FC = () => {
                         name="targetGradeCategory"
                         value={formData.targetGradeCategory}
                         onChange={handleInputChange}
-                        className={`w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white ${
-                          formErrors.targetGradeCategory
-                            ? "border-red-500"
-                            : "border-gray-300"
-                        }`}
+                        className={`w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white ${formErrors.targetGradeCategory
+                          ? "border-red-500"
+                          : "border-gray-300"
+                          }`}
                       >
                         <option value="" disabled>
                           Select Grade
@@ -876,11 +906,10 @@ const VideoDetails: React.FC = () => {
                         name="targetGender"
                         value={formData.targetGender}
                         onChange={handleInputChange}
-                        className={`w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white ${
-                          formErrors.targetGender
-                            ? "border-red-500"
-                            : "border-gray-300"
-                        }`}
+                        className={`w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white ${formErrors.targetGender
+                          ? "border-red-500"
+                          : "border-gray-300"
+                          }`}
                       >
                         <option value="" disabled>
                           Select Gender
@@ -992,6 +1021,29 @@ const VideoDetails: React.FC = () => {
                 </div>
               </div>
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Platform
+              </label>
+
+              {isEditing ? (
+                <select
+                  name="plateform"
+                  value={formData.plateform}
+                  onChange={handleInputChange}
+                  className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                >
+                  <option value="all">All</option>
+                  <option value="web">Web</option>
+                  <option value="app">App</option>
+                </select>
+              ) : (
+                <p className="font-semibold capitalize">
+                  {video.plateform || "all"}
+                </p>
+              )}
+            </div>
+
           </div>
         </div>
 
