@@ -43,9 +43,12 @@ const UploadVideo: React.FC = () => {
     grade: "",
     gender: "",
     searchable: "",
+    publicPreview: "",
+    plateform: "all",
     isWelcoming: false,
     title: "",
   });
+
   const [athletes, setAthletes] = useState<Athlete[]>([]);
   const [sports, setSports] = useState<Sport[]>([]);
   const [videoCategories, setVideoCategories] = useState<VideoCategory[]>([]);
@@ -63,7 +66,7 @@ const UploadVideo: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  
+
   const PART_SIZE = 80 * 1024 * 1024; // 80MB per part
 
   // Fetch athletes, sports, and video categories
@@ -286,7 +289,7 @@ const UploadVideo: React.FC = () => {
           thumbNailType: "image/png",
         },
         {
-       headers: {
+          headers: {
             "x-userid": userId,
             Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",
@@ -297,7 +300,7 @@ const UploadVideo: React.FC = () => {
     } catch (error: any) { // eslint-disable-line
       const message = error.response?.data
 
-?.message || error.message;
+        ?.message || error.message;
       throw new Error(`Failed to get presigned URLs: ${message}`);
     }
   };
@@ -383,7 +386,7 @@ const UploadVideo: React.FC = () => {
             setUploadProgress(
               Math.min(
                 90 +
-                  Math.round((thumbnailProgress / totalProgressWeight) * 100),
+                Math.round((thumbnailProgress / totalProgressWeight) * 100),
                 100
               )
             );
@@ -410,6 +413,8 @@ const UploadVideo: React.FC = () => {
     targetGradeCategory: string;
     targetGender: string;
     searchable: boolean;
+    publicPreview: boolean,
+    plateform: string
     isWelcoming: boolean;
   }) => {
     try {
@@ -515,6 +520,8 @@ const UploadVideo: React.FC = () => {
         targetGradeCategory: formData.grade,
         targetGender: formData.gender,
         searchable: formData.searchable === "Yes",
+        publicPreview: formData.publicPreview === "Yes",
+        plateform: formData.plateform,
         isWelcoming: formData.isWelcoming,
       };
 
@@ -538,6 +545,8 @@ const UploadVideo: React.FC = () => {
           grade: "",
           gender: "",
           searchable: "",
+          publicPreview: "",
+          plateform: "all",
           title: "",
           isWelcoming: false,
         });
@@ -746,6 +755,39 @@ const UploadVideo: React.FC = () => {
                 <option value="No">No</option>
               </select>
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Public Preview
+              </label>
+              <select
+                name="publicPreview"
+                value={formData.publicPreview}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                required
+              >
+                <option value="">Select Option</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Platform
+              </label>
+              <select
+                name="plateform"
+                value={formData.plateform}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                required
+              >
+                <option value="all">All</option>
+                <option value="web">Web</option>
+                <option value="app">App</option>
+              </select>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Welcoming Video
